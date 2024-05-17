@@ -7,19 +7,24 @@ import './ScholarshipForm.css';
 const ProductForm = () => {
   const [formData, setFormData] = useState({
     productName: '',
-    productImage: '',
     productCatagory: '',
+    price: '',
+    colour:[],
     productDescription: '',
-    royaltyEarning: 16, // Default value
-    email: '',
+    
+   
+    discountedPrice: '',
+    productCode: '',
   });
 
   const [errors, setErrors] = useState({
     productName: '',
-    productImage: '',
     productCatagory: '',
+    price: '',
+    colour:[],
     productDescription: '',
-    email: '',
+    discountedPrice: '',
+    productCode: '',
   });
 
   const handleChange = (e) => {
@@ -42,36 +47,46 @@ const ProductForm = () => {
       isValid = false;
       newErrors.productName = 'Product name is required';
     }
-    if (!formData.productImage) {
-      isValid = false;
-      newErrors.productImage = 'Product image URL is required';
-    }
     if (!formData.productCatagory) {
       isValid = false;
       newErrors.productCatagory = 'Product category is required';
     }
+    if (!formData.price) {
+      isValid = false;
+      newErrors.price = 'Price is required';
+    }
+ 
     if (!formData.productDescription) {
       isValid = false;
       newErrors.productDescription = 'Product description is required';
     }
-    const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-    if (!formData.email) {
+ 
+ 
+    if (!formData.discountedPrice) {
       isValid = false;
-      newErrors.email = 'Email is required';
-    } else if (!emailPattern.test(formData.email)) {
+      newErrors.discountedPrice = 'Discounted price is required';
+    }
+    if (!formData.productCode) {
       isValid = false;
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.productCode = 'Product code is required';
     }
 
     setErrors(newErrors);
     return isValid;
   };
 
+  let stringcolur =JSON.stringify(formData.colour)
+  formData.colour = stringcolur
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("formdata",formData)
+    return
     if (validateForm()) {
       try {
-        const response = await axios.post('/api/products', formData);
+        const response = await axios.post('https://server-dot-aatman-studio.el.r.appspot.com/AddProduct/1', formData,
+        {
+          "Content-Type": "multipart/form-data",
+        });
         console.log('Form Data Submitted:', response.data);
         toast.success('Form submitted successfully!');
       } catch (error) {
@@ -82,9 +97,10 @@ const ProductForm = () => {
   };
 
   return (
-    <div className="form-wrapper">
-      <div className="form-container">
-        <h1>Product Registration Form</h1>
+    <div className="form-wrapper h-100 ">
+      <div className="form-container mt-3 mb-5">
+        <h1 className="text-start ms-5">Product Registration Form</h1>
+        
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Product Name:</label>
@@ -98,17 +114,6 @@ const ProductForm = () => {
             {errors.productName && <span className="error">{errors.productName}</span>}
           </div>
           <div className="form-group">
-            <label>Product Image URL:</label>
-            <input
-              type="text"
-              name="productImage"
-              value={formData.productImage}
-              onChange={handleChange}
-              required
-            />
-            {errors.productImage && <span className="error">{errors.productImage}</span>}
-          </div>
-          <div className="form-group">
             <label>Product Category:</label>
             <input
               type="text"
@@ -120,6 +125,29 @@ const ProductForm = () => {
             {errors.productCatagory && <span className="error">{errors.productCatagory}</span>}
           </div>
           <div className="form-group">
+            <label>Price:</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              required
+            />
+            {errors.price && <span className="error">{errors.price}</span>}
+          </div>
+          <div className="form-group">
+            <label>colour:</label>
+            <input
+              type="text"
+              name="colour"
+              value={formData.colour}
+              onChange={handleChange}
+              required
+            />
+            {errors.colour && <span className="error">{errors.colour}</span>}
+          </div>
+        
+          <div className="form-group">
             <label>Product Description:</label>
             <input
               type="text"
@@ -130,27 +158,28 @@ const ProductForm = () => {
             />
             {errors.productDescription && <span className="error">{errors.productDescription}</span>}
           </div>
+          
           <div className="form-group">
-            <label>Royalty Earning:</label>
+            <label>Discounted Price:</label>
             <input
               type="number"
-              name="royaltyEarning"
-              value={formData.royaltyEarning}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
+              name="discountedPrice"
+              value={formData.discountedPrice}
               onChange={handleChange}
               required
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" // Regex pattern for email validation
-              title="Please enter a valid email address (e.g., example@example.com)"
             />
-            {errors.email && <span className="error">{errors.email}</span>}
+            {errors.discountedPrice && <span className="error">{errors.discountedPrice}</span>}
+          </div>
+          <div className="form-group">
+            <label>Product Code:</label>
+            <input
+              type="text"
+              name="productCode"
+              value={formData.productCode}
+              onChange={handleChange}
+              required
+            />
+            {errors.productCode && <span className="error">{errors.productCode}</span>}
           </div>
           <button type="submit" className="submit-button">Submit</button>
         </form>
