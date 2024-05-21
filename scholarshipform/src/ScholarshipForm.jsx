@@ -11,8 +11,6 @@ const ProductForm = () => {
     price: '',
     colour:[],
     productDescription: '',
-    
-   
     discountedPrice: '',
     productCode: '',
   });
@@ -21,7 +19,7 @@ const ProductForm = () => {
     productName: '',
     productCatagory: '',
     price: '',
-    colour:[],
+    colour:"",
     productDescription: '',
     discountedPrice: '',
     productCode: '',
@@ -75,12 +73,12 @@ const ProductForm = () => {
     return isValid;
   };
 
-  let stringcolur =JSON.stringify(formData.colour)
-  formData.colour = stringcolur
+  // let stringcolur =JSON.stringify(formData.colour)
+  // formData.colour = stringcolur
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("formdata",formData)
-    return
+    
     if (validateForm()) {
       try {
         const response = await axios.post('https://server-dot-aatman-studio.el.r.appspot.com/AddProduct/1', formData,
