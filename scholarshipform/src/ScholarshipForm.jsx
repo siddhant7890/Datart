@@ -9,9 +9,9 @@ const ProductForm = () => {
     productName: '',
     productCatagory: '',
     price: '',
-    colours: [''],
+    colour: [''],
     productDescription: '',
-    sizes: [''],
+    size: [''],
     tags: [''],
     discountedPrice: '',
     productCode: '',
@@ -22,9 +22,9 @@ const ProductForm = () => {
     productName: '',
     productCatagory: '',
     price: '',
-    colours: '',
+    colour: '',
     productDescription: '',
-    sizes: '',
+    size: '',
     tags: '',
     discountedPrice: '',
     productCode: '',
@@ -40,9 +40,7 @@ const ProductForm = () => {
         ...formData,
         [field]: updatedArray,
       });
-      console.log(formData);
     } else {
-      console.log('formData in else' ,formData);
       setFormData({
         ...formData,
         [name]: value,
@@ -50,7 +48,7 @@ const ProductForm = () => {
     }
     setErrors({
       ...errors,
-      [name]: '', // Clear error message when user starts typing
+      [name]: '', 
     });
   };
 
@@ -92,17 +90,17 @@ const ProductForm = () => {
       isValid = false;
       newErrors.price = 'Price is required';
     }
-    if (formData.colours.some((colour) => !colour)) {
+    if (formData.colour.some((colour) => !colour)) {
       isValid = false;
-      newErrors.colours = 'All colour fields are required';
+      newErrors.colour = 'All colour fields are required';
     }
     if (!formData.productDescription) {
       isValid = false;
       newErrors.productDescription = 'Product description is required';
     }
-    if (formData.sizes.some((size) => !size)) {
+    if (formData.size.some((size) => !size)) {
       isValid = false;
-      newErrors.sizes = 'All size fields are required';
+      newErrors.size = 'All size fields are required';
     }
     if (formData.tags.some((tag) => !tag)) {
       isValid = false;
@@ -129,16 +127,16 @@ const ProductForm = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        // const data = new FormData();
-        // for (const key in formData) {
-        //   if (Array.isArray(formData[key])) {
-        //     formData[key].forEach((item) => data.append(`${key}[]`, item));
-        //   } else {
-        //     data.append(key, formData[key]);
-        //   }
-        // }
-        console.log(formData)
-        const response = await axios.post('https://server-dot-aatman-studio.el.r.appspot.com/AddProduct/:AdminId', formData, {
+        const data = new FormData();
+        for (const key in formData) {
+          if (Array.isArray(formData[key])) {
+            data.append(key, JSON.stringify(formData[key]));
+          } else {
+            data.append(key, formData[key]);
+          }
+        }
+
+        const response = await axios.post('https://server-dot-aatman-studio.el.r.appspot.com/AddProduct/:AdminId', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -193,25 +191,25 @@ const ProductForm = () => {
           </div>
           <div className="form-group">
             <label>Colours:</label>
-            {formData.colours.map((colour, index) => (
+            {formData.colour.map((colour, index) => (
               <div key={index}>
                 <input
                   type="text"
                   value={colour}
-                  onChange={(e) => handleChange(e, index, 'colours')}
+                  onChange={(e) => handleChange(e, index, 'colour')}
                   required
                 />
                 {index > 0 && (
-                  <button type="button" onClick={() => handleRemoveField(index, 'colours')}>
+                  <button type="button" onClick={() => handleRemoveField(index, 'colour')}>
                     Remove
                   </button>
                 )}
               </div>
             ))}
-            <button type="button" onClick={() => handleAddField('colours')}>
+            <button type="button" onClick={() => handleAddField('colour')}>
               Add Colour
             </button>
-            {errors.colours && <span className="error">{errors.colours}</span>}
+            {errors.colour && <span className="error">{errors.colour}</span>}
           </div>
           <div className="form-group">
             <label>Product Description:</label>
@@ -226,25 +224,25 @@ const ProductForm = () => {
           </div>
           <div className="form-group">
             <label>Sizes:</label>
-            {formData.sizes.map((size, index) => (
+            {formData.size.map((size, index) => (
               <div key={index}>
                 <input
                   type="text"
                   value={size}
-                  onChange={(e) => handleChange(e, index, 'sizes')}
+                  onChange={(e) => handleChange(e, index, 'size')}
                   required
                 />
                 {index > 0 && (
-                  <button type="button" onClick={() => handleRemoveField(index, 'sizes')}>
+                  <button type="button" onClick={() => handleRemoveField(index, 'size')}>
                     Remove
                   </button>
                 )}
               </div>
             ))}
-            <button type="button" onClick={() => handleAddField('sizes')}>
+            <button type="button" onClick={() => handleAddField('size')}>
               Add Size
             </button>
-            {errors.sizes && <span className="error">{errors.sizes}</span>}
+            {errors.size && <span className="error">{errors.size}</span>}
           </div>
           <div className="form-group">
             <label>Tags:</label>
