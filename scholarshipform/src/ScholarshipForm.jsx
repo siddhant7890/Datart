@@ -3,8 +3,9 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './ScholarshipForm.css';
-
+import { useNavigate } from 'react-router-dom';
 const ProductForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     productName: '',
     productCatagory: '',
@@ -144,6 +145,7 @@ const ProductForm = () => {
 
         console.log('Form Data Submitted:', response.data);
         toast.success('Form submitted successfully!');
+        navigate('/view-data', { state: { data: response.data } });
       } catch (error) {
         console.error('Error submitting form:', error);
         toast.error('Failed to submit the form.');
